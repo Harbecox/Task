@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Listeners\UserRegisterListener;
+use App\Models\Task;
+use App\Notifications\SendWelcomeMessage;
+use App\Observers\TaskObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -16,7 +20,8 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         Registered::class => [
-            SendEmailVerificationNotification::class,
+//            SendEmailVerificationNotification::class,
+            UserRegisterListener::class
         ],
     ];
 
@@ -25,7 +30,7 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Task::observe(TaskObserver::class);
     }
 
     /**
